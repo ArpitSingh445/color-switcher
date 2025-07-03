@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Background Color Switcher</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px 100px;
+      text-align: center;
+      background-color: rgba(116, 236, 236, 0.465);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn {
+      height: 25px;
+      width: 25px;
+      border-radius: 50%;
+      display: inline-block;
+      cursor: pointer;
+      margin: 0 8px;
+      transform: scale(1);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .btn:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      animation: fadeInUp 1.2s ease forwards;
+    }
+
+    p {
+      text-align: justify;
+      font-size: 15px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 25px;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    #color-switcher {
+      text-align: right;
+      padding-bottom: 20px;
+    }
+
+    #magenta {
+      background-color: #FF33CC;
+    }
+
+    #royalblue {
+      background-color: #10427B;
+    }
+
+    #violet {
+      background-color: #ee82ee;
+    }
+
+    #yellow {
+      background-color: #ffff00;
+    }
+
+    #reset-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      animation: fadeInUp 1.4s ease forwards;
+    }
+
+    #reset-btn:hover {
+      background-color: #555;
+    }
+
+    /* Fade animations */
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px 20px;
+      }
+
+      #color-switcher {
+        text-align: center;
+        padding-bottom: 20px;
+      }
+
+      p {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px 10px;
+      }
+
+      p {
+        font-size: 15px;
+        line-height: 22px;
+      }
+
+      #color-switcher {
+        padding-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="color-switcher">
+    <span class="btn" id="magenta" onclick="changeBG('#FF33CC')"></span>
+    <span class="btn" id="royalblue" onclick="changeBG('#10427B')"></span>
+    <span class="btn" id="violet" onclick="changeBG('#ee82ee')"></span>
+    <span class="btn" id="yellow" onclick="changeBG('#ffff00')"></span><br>
+    <button id="reset-btn" onclick="resetBG()">Reset</button>
+  </div>
+
+  <img src="bg-img.webp" alt="Background Change Image">
+
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit molestias recusandae sapiente, possimus quidem temporibus accusamus officiis doloremque. Quia, earum! Repudiandae, architecto eum voluptatum adipisci quam ipsum explicabo repellendus excepturi atque eligendi unde asperiores, omnis delectus! Voluptatem amet pariatur dignissimos repellat facilis quisquam a unde quam, error, illo distinctio. Ad magnam tenetur nihil. Ipsum accusamus reiciendis velit ea saepe eius sed veritatis labore optio porro eos sequi dolore adipisci, minus nam quibusdam facere explicabo. Totam deleniti earum exercitationem illo? Quae, expedita ipsum et nemo laboriosam similique atque illum recusandae veritatis nihil ad magni asperiores maxime officia iusto exercitationem vero quibusdam repudiandae ducimus aperiam, itaque possimus, non minus. Recusandae excepturi officiis eaque sapiente! Delectus sit, aut ducimus facere aliquid consequuntur, qui deserunt rerum quidem asperiores eveniet corporis totam officia. Consectetur impedit quisquam libero ratione inventore, quibusdam dolorem rerum. Debitis hic mollitia quisquam similique quasi nemo doloremque et rerum! Nobis quaerat impedit deleniti, odit provident excepturi similique optio soluta odio corporis consequuntur placeat. Quam delectus officiis consectetur ut repellat laboriosam error expedita quibusdam fugiat quos harum quia numquam veniam natus, perferendis eum excepturi odit ab optio doloremque. Odio omnis commodi voluptatem quibusdam deleniti. Dolore culpa magni beatae sequi libero autem, dolor deserunt modi laudantium, accusantium saepe doloremque distinctio nam! Quibusdam cum tempore corrupti pariatur quisquam magni tenetur odit nam aperiam minima. Eaque itaque exercitationem atque iusto vero, cum alias accusamus recusandae impedit officiis nesciunt illum expedita! Cupiditate neque quasi animi consequuntur fugit modi eos corporis, nostrum inventore corrupti suscipit impedit nulla amet eaque consequatur culpa. Assumenda consequuntur vero aut minima, laudantium id voluptatem atque voluptas officiis quisquam fugiat officia harum tenetur! Tempora illo, voluptate aliquam similique deleniti aperiam, at sunt possimus voluptatibus explicabo natus numquam excepturi vel beatae. Inventore doloribus corrupti odit velit quod amet nam ipsa minus vel sed nemo, quisquam voluptas! Recusandae totam non unde labore deleniti, dolorem fugiat, at vel commodi, consequatur incidunt quod quas vitae optio pariatur dolore sint voluptatum amet quasi. Excepturi ducimus vitae laborum adipisci et sint aliquid ea optio obcaecati! Accusamus voluptas ex perspiciatis in eveniet placeat aliquam non tempore possimus quidem error dolorum ullam consequuntur porro expedita tempora laborum, sunt quo dolor distinctio quasi repudiandae pariatur quia. Dolore quibusdam sequi itaque quam earum ratione? Dignissimos blanditiis provident iste expedita mollitia beatae magni, quam vitae delectus quod officiis? A quae, laudantium numquam ullam asperiores magni libero sint soluta perspiciatis incidunt aspernatur sequi est fugiat omnis laborum odit ducimus illum corporis impedit eligendi optio esse molestiae! Dignissimos cupiditate ipsam est dicta, non voluptatem vitae quam, modi, quasi architecto dolore eius beatae aut vero nihil blanditiis dolorum ullam quidem aliquid. Animi eligendi architecto esse, quo iure dolores, sint debitis veniam facilis soluta modi enim unde molestiae illum.
+  </p>
+
+  <script>
+    function changeBG(color) {
+      document.body.style.backgroundColor = color;
+    }
+
+    function resetBG() {
+      document.body.style.backgroundColor = "rgba(40, 113, 113, 0.781)";
+    }
+  </script>
+</body>
+</html>
