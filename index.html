@@ -3,102 +3,339 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Background Color Switcher</title>
+  <title>Advanced Color Switcher</title>
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 20px 100px;
-      text-align: center;
-      background-color: rgba(116, 236, 236, 0.465);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      background-color: #f0f0f0;
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    body.dark-mode {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      font-size: 1.1em;
+      opacity: 0.8;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .controls {
+      background: #2a2a2a;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    .color-input {
+      width: 100%;
+      height: 50px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode .color-input {
+      border-color: #444;
+    }
+
+    .color-input:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      transform: scale(1.02);
+    }
+
+    .color-code-display {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      text-align: center;
+      font-size: 0.95em;
+      word-break: break-all;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    body.dark-mode .color-code-display {
+      background: #333;
+    }
+
+    .color-code-display:hover {
+      transform: scale(1.05);
+    }
+
+    .color-code-display.copied::after {
+      content: "✓ Copied!";
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.85em;
+      white-space: nowrap;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
     }
 
     .btn {
-      height: 25px;
-      width: 25px;
-      border-radius: 50%;
-      display: inline-block;
-      cursor: pointer;
-      margin: 0 8px;
-      transform: scale(1);
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      animation: fadeIn 1s ease forwards;
-    }
-
-    .btn:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      animation: fadeInUp 1.2s ease forwards;
-    }
-
-    p {
-      text-align: justify;
-      font-size: 15px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      line-height: 25px;
-      animation: fadeInUp 1.5s ease forwards;
-    }
-
-    #color-switcher {
-      text-align: right;
-      padding-bottom: 20px;
-    }
-
-    #magenta {
-      background-color: #FF33CC;
-    }
-
-    #royalblue {
-      background-color: #10427B;
-    }
-
-    #violet {
-      background-color: #ee82ee;
-    }
-
-    #yellow {
-      background-color: #ffff00;
-    }
-
-    #reset-btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: bold;
+      padding: 12px 20px;
       border: none;
-      background-color: #333;
-      color: white;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95em;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      animation: fadeInUp 1.4s ease forwards;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    #reset-btn:hover {
-      background-color: #555;
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
     }
 
-    /* Fade animations */
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 2px solid #ddd;
+    }
+
+    body.dark-mode .btn-secondary {
+      background: #333;
+      color: #f0f0f0;
+      border-color: #555;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-danger {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .preset-colors {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    body.dark-mode .preset-colors {
+      background: #2a2a2a;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .preset-colors h3 {
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+      gap: 12px;
+    }
+
+    .color-btn {
+      height: 60px;
+      border-radius: 10px;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .color-btn::after {
+      content: attr(data-color);
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.75em;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .color-btn:hover::after {
+      bottom: 65px;
+    }
+
+    .history-section {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    body.dark-mode .history-section {
+      background: #2a2a2a;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .history-section h3 {
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    .history-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+    }
+
+    .history-color {
+      height: 60px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid #ddd;
+      position: relative;
+    }
+
+    body.dark-mode .history-color {
+      border-color: #444;
+    }
+
+    .history-color:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      background: #333;
+      color: #f0f0f0;
+    }
+
+    .dark-mode-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .info-section {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      line-height: 1.6;
+    }
+
+    body.dark-mode .info-section {
+      background: #2a2a2a;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-section h3 {
+      margin-bottom: 10px;
+      color: #667eea;
+    }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInUp {
       from {
         opacity: 0;
         transform: translateY(20px);
@@ -109,61 +346,222 @@
       }
     }
 
-    /* Responsive styles */
     @media (max-width: 768px) {
-      body {
-        padding: 15px 20px;
+      .header h1 {
+        font-size: 1.8em;
       }
 
-      #color-switcher {
-        text-align: center;
-        padding-bottom: 20px;
+      .controls {
+        grid-template-columns: 1fr;
+        padding: 15px;
       }
 
-      p {
-        font-size: 16px;
-        line-height: 24px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 10px 10px;
+      .color-palette {
+        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
       }
 
-      p {
-        font-size: 15px;
-        line-height: 22px;
-      }
-
-      #color-switcher {
-        padding-bottom: 20px;
+      .dark-mode-toggle {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2em;
       }
     }
   </style>
 </head>
 <body>
-  <div id="color-switcher">
-    <span class="btn" id="magenta" onclick="changeBG('#FF33CC')"></span>
-    <span class="btn" id="royalblue" onclick="changeBG('#10427B')"></span>
-    <span class="btn" id="violet" onclick="changeBG('#ee82ee')"></span>
-    <span class="btn" id="yellow" onclick="changeBG('#ffff00')"></span><br>
-    <button id="reset-btn" onclick="resetBG()">Reset</button>
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <h1>🎨 Advanced Color Switcher</h1>
+      <p>Choose colors, customize, and save your favorites!</p>
+    </div>
+
+    <!-- Main Controls -->
+    <div class="controls">
+      <div class="control-group">
+        <label for="colorPicker">📌 Custom Color Picker</label>
+        <input type="color" id="colorPicker" class="color-input" value="#FF33CC" onchange="changeBackgroundColor(this.value)">
+      </div>
+
+      <div class="control-group">
+        <label>🔤 Current Color Code</label>
+        <div class="color-code-display" id="colorCode" onclick="copyToClipboard()">
+          #FF33CC
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>⚡ Quick Actions</label>
+        <div class="button-group">
+          <button class="btn btn-primary" onclick="generateRandomColor()">🎲 Random</button>
+          <button class="btn btn-secondary" onclick="resetColor()">↩️ Reset</button>
+          <button class="btn btn-danger" onclick="clearHistory()">🗑️ Clear History</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preset Colors -->
+    <div class="preset-colors">
+      <h3>🌈 Preset Colors</h3>
+      <div class="color-palette" id="colorPalette"></div>
+    </div>
+
+    <!-- Color History -->
+    <div class="history-section">
+      <h3>📜 Color History</h3>
+      <div class="history-list" id="historyList">
+        <p style="grid-column: 1 / -1; opacity: 0.7;">No history yet. Choose some colors!</p>
+      </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+      <h3>💡 How to Use</h3>
+      <p>
+        • <strong>Custom Color Picker:</strong> Click the color input box to select any color from the spectrum.<br>
+        • <strong>Current Color Code:</strong> Click on the color code to copy it to your clipboard.<br>
+        • <strong>Random Color:</strong> Generate random colors with one click.<br>
+        • <strong>Preset Colors:</strong> Click any preset color to apply it instantly.<br>
+        • <strong>Color History:</strong> All your recently used colors are saved here. Click to reuse them.<br>
+        • <strong>Dark Mode:</strong> Toggle between light and dark themes using the button in the top-right.
+      </p>
+    </div>
   </div>
 
-  <img src="bg-img.webp" alt="Background Change Image">
-
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit molestias recusandae sapiente, possimus quidem temporibus accusamus officiis doloremque. Quia, earum! Repudiandae, architecto eum voluptatum adipisci quam ipsum explicabo repellendus excepturi atque eligendi unde asperiores, omnis delectus! Voluptatem amet pariatur dignissimos repellat facilis quisquam a unde quam, error, illo distinctio. Ad magnam tenetur nihil. Ipsum accusamus reiciendis velit ea saepe eius sed veritatis labore optio porro eos sequi dolore adipisci, minus nam quibusdam facere explicabo. Totam deleniti earum exercitationem illo? Quae, expedita ipsum et nemo laboriosam similique atque illum recusandae veritatis nihil ad magni asperiores maxime officia iusto exercitationem vero quibusdam repudiandae ducimus aperiam, itaque possimus, non minus. Recusandae excepturi officiis eaque sapiente! Delectus sit, aut ducimus facere aliquid consequuntur, qui deserunt rerum quidem asperiores eveniet corporis totam officia. Consectetur impedit quisquam libero ratione inventore, quibusdam dolorem rerum. Debitis hic mollitia quisquam similique quasi nemo doloremque et rerum! Nobis quaerat impedit deleniti, odit provident excepturi similique optio soluta odio corporis consequuntur placeat. Quam delectus officiis consectetur ut repellat laboriosam error expedita quibusdam fugiat quos harum quia numquam veniam natus, perferendis eum excepturi odit ab optio doloremque. Odio omnis commodi voluptatem quibusdam deleniti. Dolore culpa magni beatae sequi libero autem, dolor deserunt modi laudantium, accusantium saepe doloremque distinctio nam! Quibusdam cum tempore corrupti pariatur quisquam magni tenetur odit nam aperiam minima. Eaque itaque exercitationem atque iusto vero, cum alias accusamus recusandae impedit officiis nesciunt illum expedita! Cupiditate neque quasi animi consequuntur fugit modi eos corporis, nostrum inventore corrupti suscipit impedit nulla amet eaque consequatur culpa. Assumenda consequuntur vero aut minima, laudantium id voluptatem atque voluptas officiis quisquam fugiat officia harum tenetur! Tempora illo, voluptate aliquam similique deleniti aperiam, at sunt possimus voluptatibus explicabo natus numquam excepturi vel beatae. Inventore doloribus corrupti odit velit quod amet nam ipsa minus vel sed nemo, quisquam voluptas! Recusandae totam non unde labore deleniti, dolorem fugiat, at vel commodi, consequatur incidunt quod quas vitae optio pariatur dolore sint voluptatum amet quasi. Excepturi ducimus vitae laborum adipisci et sint aliquid ea optio obcaecati! Accusamus voluptas ex perspiciatis in eveniet placeat aliquam non tempore possimus quidem error dolorum ullam consequuntur porro expedita tempora laborum, sunt quo dolor distinctio quasi repudiandae pariatur quia. Dolore quibusdam sequi itaque quam earum ratione? Dignissimos blanditiis provident iste expedita mollitia beatae magni, quam vitae delectus quod officiis? A quae, laudantium numquam ullam asperiores magni libero sint soluta perspiciatis incidunt aspernatur sequi est fugiat omnis laborum odit ducimus illum corporis impedit eligendi optio esse molestiae! Dignissimos cupiditate ipsam est dicta, non voluptatem vitae quam, modi, quasi architecto dolore eius beatae aut vero nihil blanditiis dolorum ullam quidem aliquid. Animi eligendi architecto esse, quo iure dolores, sint debitis veniam facilis soluta modi enim unde molestiae illum.
-  </p>
-
   <script>
-    function changeBG(color) {
-      document.body.style.backgroundColor = color;
+    // Preset colors
+    const presetColors = [
+      { name: 'Magenta', hex: '#FF33CC' },
+      { name: 'Royal Blue', hex: '#10427B' },
+      { name: 'Violet', hex: '#ee82ee' },
+      { name: 'Yellow', hex: '#ffff00' },
+      { name: 'Red', hex: '#FF0000' },
+      { name: 'Green', hex: '#00FF00' },
+      { name: 'Cyan', hex: '#00FFFF' },
+      { name: 'Orange', hex: '#FFA500' },
+      { name: 'Pink', hex: '#FFC0CB' },
+      { name: 'Purple', hex: '#800080' },
+      { name: 'Lime', hex: '#00FF00' },
+      { name: 'Turquoise', hex: '#40E0D0' },
+      { name: 'Coral', hex: '#FF7F50' },
+      { name: 'Navy', hex: '#000080' },
+      { name: 'Teal', hex: '#008080' },
+      { name: 'Gold', hex: '#FFD700' }
+    ];
+
+    let colorHistory = JSON.parse(localStorage.getItem('colorHistory')) || [];
+    let darkMode = JSON.parse(localStorage.getItem('darkMode')) || false;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      initializePresetColors();
+      updateHistory();
+      if (darkMode) {
+        document.body.classList.add('dark-mode');
+        updateDarkModeToggle();
+      }
+      // Load saved color
+      const savedColor = localStorage.getItem('currentColor') || '#FF33CC';
+      changeBackgroundColor(savedColor);
+    });
+
+    function initializePresetColors() {
+      const palette = document.getElementById('colorPalette');
+      palette.innerHTML = '';
+      presetColors.forEach(color => {
+        const btn = document.createElement('div');
+        btn.className = 'color-btn';
+        btn.style.backgroundColor = color.hex;
+        btn.setAttribute('data-color', color.name);
+        btn.onclick = () => changeBackgroundColor(color.hex);
+        palette.appendChild(btn);
+      });
     }
 
-    function resetBG() {
-      document.body.style.backgroundColor = "rgba(40, 113, 113, 0.781)";
+    function changeBackgroundColor(color) {
+      document.body.style.backgroundColor = color;
+      document.getElementById('colorPicker').value = color;
+      document.getElementById('colorCode').textContent = color.toUpperCase();
+      
+      // Add to history
+      addToHistory(color);
+      
+      // Save to localStorage
+      localStorage.setItem('currentColor', color);
+    }
+
+    function addToHistory(color) {
+      if (!colorHistory.includes(color.toUpperCase())) {
+        colorHistory.unshift(color.toUpperCase());
+        if (colorHistory.length > 12) {
+          colorHistory.pop();
+        }
+        localStorage.setItem('colorHistory', JSON.stringify(colorHistory));
+        updateHistory();
+      }
+    }
+
+    function updateHistory() {
+      const historyList = document.getElementById('historyList');
+      if (colorHistory.length === 0) {
+        historyList.innerHTML = '<p style="grid-column: 1 / -1; opacity: 0.7;">No history yet. Choose some colors!</p>';
+        return;
+      }
+      
+      historyList.innerHTML = '';
+      colorHistory.forEach(color => {
+        const colorDiv = document.createElement('div');
+        colorDiv.className = 'history-color';
+        colorDiv.style.backgroundColor = color;
+        colorDiv.title = color;
+        colorDiv.onclick = () => changeBackgroundColor(color);
+        historyList.appendChild(colorDiv);
+      });
+    }
+
+    function generateRandomColor() {
+      const colors = '#0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += colors[Math.floor(Math.random() * 16)];
+      }
+      changeBackgroundColor(color);
+    }
+
+    function resetColor() {
+      changeBackgroundColor('#FF33CC');
+    }
+
+    function clearHistory() {
+      if (confirm('Are you sure you want to clear the color history?')) {
+        colorHistory = [];
+        localStorage.setItem('colorHistory', JSON.stringify(colorHistory));
+        updateHistory();
+      }
+    }
+
+    function copyToClipboard() {
+      const colorCode = document.getElementById('colorCode').textContent;
+      navigator.clipboard.writeText(colorCode).then(() => {
+        const element = document.getElementById('colorCode');
+        element.classList.add('copied');
+        setTimeout(() => {
+          element.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', JSON.stringify(darkMode));
+      updateDarkModeToggle();
+    }
+
+    function updateDarkModeToggle() {
+      const toggle = document.querySelector('.dark-mode-toggle');
+      toggle.textContent = darkMode ? '☀️' : '🌙';
     }
   </script>
 </body>
